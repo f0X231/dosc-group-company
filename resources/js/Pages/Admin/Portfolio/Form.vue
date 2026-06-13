@@ -24,6 +24,8 @@ const form = useForm({
 const videoPreviewUrl  = ref(props.portfolio?.video_url     ?? null);
 const thumbPreviewUrl  = ref(props.portfolio?.thumbnail_url ?? null);
 const videoError       = ref('');
+const videoInput       = ref(null);
+const thumbInput       = ref(null);
 
 function onVideoChange(e) {
     const file = e.target.files?.[0];
@@ -161,23 +163,21 @@ function formatSize(bytes) {
 
                         <!-- File input -->
                         <div>
-                            <label class="block">
-                                <span class="text-sm font-medium text-gray-700">
-                                    {{ videoPreviewUrl ? 'เลือกวิดีโอใหม่' : 'เลือกไฟล์วิดีโอ' }}
-                                </span>
-                                <div class="mt-2 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl px-6 py-8 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
-                                    <div class="text-center">
-                                        <svg class="mx-auto w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/>
-                                        </svg>
-                                        <p class="text-sm text-gray-500">คลิกเพื่อเลือกไฟล์</p>
-                                        <p class="text-xs text-gray-400 mt-1">MP4 ขนาดไม่เกิน 6 MB</p>
-                                    </div>
-                                    <input type="file" accept="video/mp4,video/quicktime"
-                                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                           @change="onVideoChange" />
+                            <p class="text-sm font-medium text-gray-700 mb-2">
+                                {{ videoPreviewUrl ? 'เลือกวิดีโอใหม่' : 'เลือกไฟล์วิดีโอ' }}
+                            </p>
+                            <div @click="videoInput.click()"
+                                 class="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl px-6 py-8 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                                <div class="text-center">
+                                    <svg class="mx-auto w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/>
+                                    </svg>
+                                    <p class="text-sm text-gray-500">คลิกเพื่อเลือกไฟล์</p>
+                                    <p class="text-xs text-gray-400 mt-1">MP4 ขนาดไม่เกิน 6 MB</p>
                                 </div>
-                            </label>
+                            </div>
+                            <input ref="videoInput" type="file" accept="video/mp4,video/quicktime"
+                                   class="hidden" @change="onVideoChange" />
                             <p v-if="videoError" class="text-red-500 text-xs mt-1">{{ videoError }}</p>
                             <p v-if="form.errors.video" class="text-red-500 text-xs mt-1">{{ form.errors.video }}</p>
                         </div>
@@ -198,20 +198,20 @@ function formatSize(bytes) {
                             </button>
                         </div>
 
-                        <label class="block">
-                            <div class="relative flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl px-6 py-6 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                        <div>
+                            <div @click="thumbInput.click()"
+                                 class="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl px-6 py-6 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                                 <div class="text-center">
                                     <svg class="mx-auto w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z"/>
                                     </svg>
                                     <p class="text-xs text-gray-500">JPG / PNG / WebP ไม่เกิน 2 MB</p>
                                 </div>
-                                <input type="file" accept="image/jpeg,image/png,image/webp"
-                                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                       @change="onThumbnailChange" />
                             </div>
+                            <input ref="thumbInput" type="file" accept="image/jpeg,image/png,image/webp"
+                                   class="hidden" @change="onThumbnailChange" />
                             <p v-if="form.errors.thumbnail" class="text-red-500 text-xs mt-1">{{ form.errors.thumbnail }}</p>
-                        </label>
+                        </div>
                     </div>
                 </div>
 

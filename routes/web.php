@@ -4,8 +4,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogMediaController;
+use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\PackageController as AdminPackageController;
 use App\Http\Controllers\Admin\PackageAddonController;
@@ -15,7 +21,7 @@ use Inertia\Inertia;
 
 // ─── Public Routes ────────────────────────────────────────────────────────────
 
-Route::get('/', fn () => Inertia::render('Home'))->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 
@@ -28,8 +34,8 @@ Route::prefix('services')->name('services.')->group(function () {
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
 Route::prefix('blog')->name('blog.')->group(function () {
-    Route::get('/', fn () => Inertia::render('Blog/Index'))->name('index');
-    Route::get('/{slug}', fn (string $slug) => Inertia::render('Blog/Show', ['post' => ['slug' => $slug]]))->name('show');
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -41,6 +47,16 @@ Route::get('/privacy-policy', fn () => Inertia::render('PrivacyPolicy'))->name('
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
+    // Hero Banner
+    Route::get('/hero-banner', [HeroBannerController::class, 'index'])->name('hero-banner');
+    Route::get('/hero-banner/create', [HeroBannerController::class, 'create'])->name('hero-banner.create');
+    Route::post('/hero-banner', [HeroBannerController::class, 'store'])->name('hero-banner.store');
+    Route::get('/hero-banner/{heroBanner}/edit', [HeroBannerController::class, 'edit'])->name('hero-banner.edit');
+    Route::post('/hero-banner/{heroBanner}', [HeroBannerController::class, 'update'])->name('hero-banner.update');
+    Route::delete('/hero-banner/{heroBanner}', [HeroBannerController::class, 'destroy'])->name('hero-banner.destroy');
+    Route::patch('/hero-banner/{heroBanner}/toggle', [HeroBannerController::class, 'toggleStatus'])->name('hero-banner.toggle');
+    Route::post('/hero-banner/reorder', [HeroBannerController::class, 'reorder'])->name('hero-banner.reorder');
+
     // Portfolio
     Route::get('/portfolio', [AdminPortfolioController::class, 'index'])->name('portfolio');
     Route::get('/portfolio/create', [AdminPortfolioController::class, 'create'])->name('portfolio.create');
@@ -50,9 +66,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::delete('/portfolio/{portfolio}', [AdminPortfolioController::class, 'destroy'])->name('portfolio.destroy');
     Route::patch('/portfolio/{portfolio}/toggle', [AdminPortfolioController::class, 'toggleStatus'])->name('portfolio.toggle');
     Route::post('/portfolio/reorder', [AdminPortfolioController::class, 'reorder'])->name('portfolio.reorder');
-    Route::get('/blog', fn () => Inertia::render('Admin/Blog/Index'))->name('blog');
-    Route::get('/blog/create', fn () => Inertia::render('Admin/Blog/Form'))->name('blog.create');
-    Route::get('/blog/{id}/edit', fn (int $id) => Inertia::render('Admin/Blog/Form', ['post' => ['id' => $id]]))->name('blog.edit');
+    // Blog
+    Route::get('/blog', [AdminBlogController::class, 'index'])->name('blog');
+    Route::get('/blog/categories', [BlogCategoryController::class, 'index'])->name('blog.categories');
+    Route::post('/blog/categories', [BlogCategoryController::class, 'store'])->name('blog.categories.store');
+    Route::put('/blog/categories/{blogCategory}', [BlogCategoryController::class, 'update'])->name('blog.categories.update');
+    Route::delete('/blog/categories/{blogCategory}', [BlogCategoryController::class, 'destroy'])->name('blog.categories.destroy');
+    Route::post('/blog/media/upload', [BlogMediaController::class, 'upload'])->name('blog.media.upload');
+    Route::get('/blog/create', [AdminBlogController::class, 'create'])->name('blog.create');
+    Route::post('/blog', [AdminBlogController::class, 'store'])->name('blog.store');
+    Route::get('/blog/{blog}/edit', [AdminBlogController::class, 'edit'])->name('blog.edit');
+    Route::post('/blog/{blog}', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/{blog}', [AdminBlogController::class, 'destroy'])->name('blog.destroy');
+    Route::patch('/blog/{blog}/featured', [AdminBlogController::class, 'toggleFeatured'])->name('blog.featured');
+    Route::patch('/blog/{blog}/status', [AdminBlogController::class, 'updateStatus'])->name('blog.status');
     // Packages
     Route::get('/packages', [AdminPackageController::class, 'index'])->name('packages');
     Route::get('/packages/create', [AdminPackageController::class, 'create'])->name('packages.create');
