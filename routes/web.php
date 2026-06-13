@@ -4,10 +4,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\PackageController as AdminPackageController;
 use App\Http\Controllers\Admin\PackageAddonController;
+use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,7 +17,7 @@ use Inertia\Inertia;
 
 Route::get('/', fn () => Inertia::render('Home'))->name('home');
 
-Route::get('/portfolio', fn () => Inertia::render('Portfolio/Index'))->name('portfolio');
+Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 
 Route::prefix('services')->name('services.')->group(function () {
     Route::get('/', fn () => Inertia::render('Services/Index'))->name('index');
@@ -39,7 +41,15 @@ Route::get('/privacy-policy', fn () => Inertia::render('PrivacyPolicy'))->name('
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
-    Route::get('/portfolio', fn () => Inertia::render('Admin/Portfolio/Index'))->name('portfolio');
+    // Portfolio
+    Route::get('/portfolio', [AdminPortfolioController::class, 'index'])->name('portfolio');
+    Route::get('/portfolio/create', [AdminPortfolioController::class, 'create'])->name('portfolio.create');
+    Route::post('/portfolio', [AdminPortfolioController::class, 'store'])->name('portfolio.store');
+    Route::get('/portfolio/{portfolio}/edit', [AdminPortfolioController::class, 'edit'])->name('portfolio.edit');
+    Route::post('/portfolio/{portfolio}', [AdminPortfolioController::class, 'update'])->name('portfolio.update');
+    Route::delete('/portfolio/{portfolio}', [AdminPortfolioController::class, 'destroy'])->name('portfolio.destroy');
+    Route::patch('/portfolio/{portfolio}/toggle', [AdminPortfolioController::class, 'toggleStatus'])->name('portfolio.toggle');
+    Route::post('/portfolio/reorder', [AdminPortfolioController::class, 'reorder'])->name('portfolio.reorder');
     Route::get('/blog', fn () => Inertia::render('Admin/Blog/Index'))->name('blog');
     Route::get('/blog/create', fn () => Inertia::render('Admin/Blog/Form'))->name('blog.create');
     Route::get('/blog/{id}/edit', fn (int $id) => Inertia::render('Admin/Blog/Form', ['post' => ['id' => $id]]))->name('blog.edit');
