@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\ServiceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -132,6 +133,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
     Route::patch('/contacts/{contact}/status', [AdminContactController::class, 'updateStatus'])->name('contacts.status');
     Route::delete('/contacts/{contact}', [AdminContactController::class, 'destroy'])->name('contacts.destroy');
+
+    // Services
+    Route::get('/services', [ServiceController::class, 'index'])->name('services');
+    Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
+    Route::post('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+    Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
+    Route::patch('/services/{service}/toggle', [ServiceController::class, 'toggleStatus'])->name('services.toggle');
+    Route::post('/services/reorder', [ServiceController::class, 'reorder'])->name('services.reorder');
 
     // FAQ
     Route::get('/faq', [AdminFaqController::class, 'index'])->name('faq');
