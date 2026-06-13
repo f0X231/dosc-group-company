@@ -227,5 +227,25 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
             </div>
         </footer>
 
+        <!-- Floating contact buttons -->
+        <div class="fixed bottom-6 right-4 z-50 flex flex-col gap-3">
+            <!-- LINE -->
+            <a href="https://line.me/ti/p/@dosc" target="_blank" rel="noopener"
+               class="w-12 h-12 rounded-full bg-green-500 hover:bg-green-400 shadow-lg flex items-center justify-center text-white transition-transform hover:scale-110"
+               title="LINE @doscgroup">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="m12 .5c-6.615 0-12 4.398-12 9.803 0 4.841 4.27 8.897 10.035 9.608.391.084.922.258 1.057.593.12.301.079.771.038 1.073l-.164 1.013c-.045.301-.24 1.186 1.049.647 1.291-.539 6.916-4.103 9.436-7.023 1.724-1.952 2.549-3.965 2.549-6.311 0-5.405-5.385-9.803-12-9.803z"/>
+                </svg>
+            </a>
+            <!-- Phone -->
+            <a v-if="site.phone" :href="`tel:${site.phone}`"
+               class="w-12 h-12 rounded-full bg-red-700 hover:bg-red-600 shadow-lg flex items-center justify-center text-white transition-transform hover:scale-110"
+               :title="site.phone">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.338c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 4c.828 0 1.655.063 2.465.188C9.65 4.371 10.5 5.4 10.5 6.584v3.33c0 1.007-.603 1.927-1.548 2.308L7.3 12.92c.618 1.3 1.556 2.455 2.72 3.32l.703-1.65c.38-.946 1.3-1.549 2.308-1.549h3.33c1.184 0 2.213.85 2.396 2.035.125.81.188 1.637.188 2.465 0 .569-.044 1.127-.132 1.668-.09 1.174-1.076 2.085-2.254 2.085C9.11 22.5 1.5 14.89 1.5 5.5c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 3"/>
+                </svg>
+            </a>
+        </div>
+
     </div>
 </template>
