@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\PackageController as AdminPackageController;
 use App\Http\Controllers\Admin\PackageAddonController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\PartnerController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -97,6 +99,24 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::delete('/packages/addons/{addon}', [PackageAddonController::class, 'destroy'])->name('packages.addons.destroy');
     Route::patch('/packages/addons/{addon}/toggle', [PackageAddonController::class, 'toggleStatus'])->name('packages.addons.toggle');
     Route::post('/packages/addons/reorder', [PackageAddonController::class, 'reorder'])->name('packages.addons.reorder');
+
+    // Partners
+    Route::get('/partners', [PartnerController::class, 'index'])->name('partners');
+    Route::post('/partners', [PartnerController::class, 'store'])->name('partners.store');
+    Route::post('/partners/{partner}', [PartnerController::class, 'update'])->name('partners.update');
+    Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
+    Route::patch('/partners/{partner}/toggle', [PartnerController::class, 'toggleStatus'])->name('partners.toggle');
+    Route::post('/partners/reorder', [PartnerController::class, 'reorder'])->name('partners.reorder');
+    Route::post('/partners/settings', [PartnerController::class, 'saveSettings'])->name('partners.settings');
+
+    // Testimonials
+    Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonials');
+    Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
+    Route::post('/testimonials/{testimonial}', [TestimonialController::class, 'update'])->name('testimonials.update');
+    Route::delete('/testimonials/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
+    Route::patch('/testimonials/{testimonial}/toggle', [TestimonialController::class, 'toggleStatus'])->name('testimonials.toggle');
+    Route::post('/testimonials/reorder', [TestimonialController::class, 'reorder'])->name('testimonials.reorder');
+    Route::post('/testimonials/settings', [TestimonialController::class, 'saveSettings'])->name('testimonials.settings');
 
     // Contacts
     Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts');

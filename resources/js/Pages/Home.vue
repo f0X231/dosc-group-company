@@ -1,25 +1,20 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { Head, Link } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const props = defineProps({
-    hero: { type: Object, default: null },
+    hero:                { type: Object, default: null },
+    testimonialSettings: { type: Object, default: () => ({}) },
+    testimonials:        { type: Array,  default: () => [] },
+    partnerSettings:     { type: Object, default: () => ({}) },
+    partners:            { type: Array,  default: () => [] },
 });
 
 // ─── Animation ────────────────────────────────────────────────────────────────
 const animated       = ref(false);
 const typedText      = ref('');
 const showCursor     = ref(true);
-
-onMounted(() => {
-    // Trigger slide_up / fade after small delay
-    requestAnimationFrame(() => { animated.value = true; });
-
-    if (props.hero?.animation_style === 'typewriter' && props.hero?.headline_highlight) {
-        runTypewriter(props.hero.headline_highlight);
-    }
-});
 
 function runTypewriter(text) {
     let i = 0;
@@ -70,6 +65,45 @@ const imgAlignClass = computed(() => ({
 const displayHighlight = computed(() => {
     if (animMode.value === 'typewriter') return typedText.value;
     return hero.value?.headline_highlight ?? '';
+});
+
+// ─── Testimonials carousel ────────────────────────────────────────────────────
+const activeSlide   = ref(0);
+let   autoplayTimer = null;
+
+const testimonialCount = computed(() => props.testimonials.length);
+
+function goSlide(i) {
+    activeSlide.value = (i + testimonialCount.value) % testimonialCount.value;
+}
+function prevSlide() { goSlide(activeSlide.value - 1); }
+function nextSlide() { goSlide(activeSlide.value + 1); }
+
+function startAutoplay() {
+    if (testimonialCount.value < 2) return;
+    autoplayTimer = setInterval(() => nextSlide(), 5000);
+}
+function stopAutoplay() { clearInterval(autoplayTimer); }
+
+onMounted(() => {
+    requestAnimationFrame(() => { animated.value = true; });
+    if (props.hero?.animation_style === 'typewriter' && props.hero?.headline_highlight) {
+        runTypewriter(props.hero.headline_highlight);
+    }
+    startAutoplay();
+});
+onUnmounted(() => stopAutoplay());
+
+function initialChar(name) { return name?.charAt(0)?.toUpperCase() ?? '?'; }
+const avatarStack = computed(() => props.testimonials.slice(0, 4));
+
+// ─── Partners marquee ─────────────────────────────────────────────────────────
+// Duplicate list so the seamless loop never shows a gap
+const marqueeItems = computed(() => {
+    if (props.partners.length === 0) return [];
+    // Need at least enough copies to fill 2× viewport
+    const copies = Math.max(2, Math.ceil(12 / props.partners.length) + 1);
+    return Array.from({ length: copies }, () => props.partners).flat();
 });
 </script>
 
@@ -200,10 +234,189 @@ const displayHighlight = computed(() => {
             </div>
         </section>
 
-        <section class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 text-center font-kanit">
-                <h2 class="text-2xl font-bold text-gray-900">รีวิวจากลูกค้า</h2>
-                <p class="mt-2 text-gray-400 text-sm">placeholder</p>
+        <!-- ══════════════════════════════════════════════════════
+             PARTNERS / CLIENTS
+        ══════════════════════════════════════════════════════ -->
+        <section v-if="partners.length"
+                 class="py-14 overflow-hidden"
+                 :style="`background: ${partnerSettings.bg_color ?? '#7c1d1d'}`">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 mb-8">
+                <h2 class="text-2xl lg:text-3xl font-bold text-white font-kanit">
+                    {{ partnerSettings.heading ?? 'ลูกค้าที่ให้ความไว้วางใจกับเรา' }}
+                </h2>
+            </div>
+
+            <!-- White card with marquee -->
+            <div class="mx-6 lg:mx-8 bg-white rounded-2xl shadow-lg py-8 overflow-hidden">
+                <div class="marquee-track" :class="{ 'pause-on-hover': true }">
+                    <div class="marquee-inner">
+                        <a v-for="(item, i) in marqueeItems" :key="`${item.id}-${i}`"
+                           :href="item.website_url ?? undefined"
+                           :target="item.website_url ? '_blank' : undefined"
+                           :rel="item.website_url ? 'noopener noreferrer' : undefined"
+                           class="marquee-item"
+                           :class="{ 'cursor-default': !item.website_url }">
+                            <div class="flex flex-col items-center gap-2 px-8">
+                                <div class="h-14 flex items-center justify-center">
+                                    <img v-if="item.logo_url"
+                                         :src="item.logo_url"
+                                         :alt="item.name"
+                                         class="max-h-full max-w-[120px] object-contain transition-all duration-300"
+                                         :class="partnerSettings.grayscale
+                                             ? 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
+                                             : 'hover:scale-105'"/>
+                                    <div v-else
+                                         class="px-4 py-2 bg-gray-100 rounded-lg text-xs font-bold text-gray-400 transition hover:bg-gray-200">
+                                        {{ item.name }}
+                                    </div>
+                                </div>
+                                <span v-if="partnerSettings.show_name"
+                                      class="text-xs text-gray-500 font-medium text-center whitespace-nowrap">
+                                    {{ item.name }}
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════
+             TESTIMONIALS
+        ══════════════════════════════════════════════════════ -->
+        <section v-if="testimonials.length"
+                 class="py-16 lg:py-24 overflow-hidden"
+                 :style="`background: ${testimonialSettings.bg_color ?? '#7c1d1d'}`">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+                    <!-- Left: featured image + overlay badge -->
+                    <div class="relative hidden lg:block">
+                        <div v-if="testimonialSettings.featured_image_url"
+                             class="rounded-3xl overflow-hidden aspect-[3/4] max-w-sm mx-auto shadow-2xl">
+                            <img :src="testimonialSettings.featured_image_url"
+                                 alt="" class="w-full h-full object-cover"/>
+                        </div>
+                        <!-- Placeholder if no image -->
+                        <div v-else
+                             class="rounded-3xl aspect-[3/4] max-w-sm mx-auto bg-white/10 flex items-center justify-center">
+                            <svg class="w-20 h-20 text-white/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                        </div>
+
+                        <!-- Avatar stack badge -->
+                        <div v-if="avatarStack.length"
+                             class="absolute bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:-right-6
+                                    bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 min-w-[220px]">
+                            <div class="flex -space-x-2">
+                                <div v-for="t in avatarStack" :key="t.id"
+                                     class="w-9 h-9 rounded-full border-2 border-white overflow-hidden flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                                     :style="t.avatar_url ? '' : `background: ${t.avatar_color}`">
+                                    <img v-if="t.avatar_url" :src="t.avatar_url" class="w-full h-full object-cover"/>
+                                    <span v-else>{{ initialChar(t.customer_name) }}</span>
+                                </div>
+                            </div>
+                            <p v-if="testimonialSettings.overlay_text" class="text-xs font-semibold text-gray-700 leading-tight">
+                                {{ testimonialSettings.overlay_text }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: heading + carousel -->
+                    <div>
+                        <p class="text-xs font-bold tracking-widest uppercase text-white/60 mb-3">
+                            {{ testimonialSettings.label ?? 'TESTIMONIALS' }}
+                        </p>
+                        <h2 class="text-4xl lg:text-5xl font-bold text-white font-kanit mb-8">
+                            {{ testimonialSettings.heading ?? 'กำลังใจสำคัญของเรา' }}
+                        </h2>
+
+                        <!-- Card carousel -->
+                        <div class="relative"
+                             @mouseenter="stopAutoplay"
+                             @mouseleave="startAutoplay">
+
+                            <!-- Cards -->
+                            <div class="overflow-hidden">
+                                <Transition name="slide-card" mode="out-in">
+                                    <div :key="activeSlide" class="bg-white rounded-2xl p-6 shadow-lg">
+                                        <!-- Reviewer -->
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center text-white font-bold text-lg"
+                                                 :style="testimonials[activeSlide]?.avatar_url ? '' : `background: ${testimonials[activeSlide]?.avatar_color}`">
+                                                <img v-if="testimonials[activeSlide]?.avatar_url"
+                                                     :src="testimonials[activeSlide].avatar_url"
+                                                     class="w-full h-full object-cover"/>
+                                                <span v-else>{{ initialChar(testimonials[activeSlide]?.customer_name) }}</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-gray-900 text-sm">{{ testimonials[activeSlide]?.customer_name }}</p>
+                                                <p v-if="testimonials[activeSlide]?.customer_title"
+                                                   class="text-xs text-gray-400">{{ testimonials[activeSlide]?.customer_title }}</p>
+                                            </div>
+                                            <!-- Source icon -->
+                                            <div class="ml-auto">
+                                                <svg v-if="testimonials[activeSlide]?.source === 'google'"
+                                                     class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                                                </svg>
+                                                <svg v-else-if="testimonials[activeSlide]?.source === 'facebook'"
+                                                     class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <hr class="border-gray-100 mb-4"/>
+
+                                        <p class="text-gray-700 text-sm leading-relaxed">{{ testimonials[activeSlide]?.review_text }}</p>
+
+                                        <!-- Stars -->
+                                        <div class="flex gap-0.5 mt-4">
+                                            <span v-for="s in 5" :key="s"
+                                                  class="text-lg"
+                                                  :class="s <= (testimonials[activeSlide]?.rating ?? 5) ? 'text-amber-400' : 'text-gray-200'">★</span>
+                                        </div>
+                                    </div>
+                                </Transition>
+                            </div>
+
+                            <!-- Dots + arrows -->
+                            <div class="flex items-center gap-4 mt-6">
+                                <!-- Prev -->
+                                <button @click="prevSlide"
+                                        class="w-10 h-10 rounded-full border-2 border-white/40 text-white hover:border-white hover:bg-white/10 transition flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                                </button>
+
+                                <!-- Dots -->
+                                <div class="flex gap-1.5 flex-1">
+                                    <button v-for="(_, i) in testimonials" :key="i"
+                                            @click="goSlide(i)"
+                                            class="h-1.5 rounded-full transition-all duration-300"
+                                            :class="activeSlide === i ? 'bg-white w-6' : 'bg-white/30 w-1.5 hover:bg-white/60'"/>
+                                </div>
+
+                                <!-- Next -->
+                                <button @click="nextSlide"
+                                        class="w-10 h-10 rounded-full border-2 border-white/40 text-white hover:border-white hover:bg-white/10 transition flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                                </button>
+                            </div>
+
+                            <!-- CTA button -->
+                            <div v-if="testimonialSettings.cta_text" class="mt-6">
+                                <a :href="testimonialSettings.cta_url ?? '#'"
+                                   :target="testimonialSettings.cta_url?.startsWith('http') ? '_blank' : undefined"
+                                   class="inline-block border-2 border-white/70 text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-white hover:text-gray-900 transition">
+                                    {{ testimonialSettings.cta_text }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </PublicLayout>
@@ -324,5 +537,35 @@ export default { components: { HeroText } };
 @keyframes wavePulse {
     0%   { opacity: 0.15; }
     100% { opacity: 0.35; }
+}
+
+/* ── Testimonial card slide ── */
+.slide-card-enter-active,
+.slide-card-leave-active { transition: opacity 0.35s ease, transform 0.35s ease; }
+.slide-card-enter-from   { opacity: 0; transform: translateX(24px); }
+.slide-card-leave-to     { opacity: 0; transform: translateX(-24px); }
+
+/* ── Partner marquee ── */
+.marquee-track {
+    overflow: hidden;
+    width: 100%;
+}
+.marquee-track:hover .marquee-inner {
+    animation-play-state: paused;
+}
+.marquee-inner {
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll 30s linear infinite;
+}
+.marquee-item {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+@keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 </style>
