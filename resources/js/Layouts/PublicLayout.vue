@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import SocialIcon from '@/Components/SocialIcon.vue';
 
 const mobileOpen = ref(false);
 const portfolioOpen = ref(false);
@@ -13,6 +14,10 @@ function closeMobile() {
     mobilePortfolioOpen.value = false;
     mobileServicesOpen.value = false;
 }
+
+const page        = usePage();
+const site        = computed(() => page.props.site        ?? {});
+const socialLinks = computed(() => page.props.socialLinks ?? []);
 </script>
 
 <template>
@@ -24,8 +29,9 @@ function closeMobile() {
                 <div class="flex items-center justify-between h-16">
 
                     <!-- Logo -->
-                    <Link href="/" class="flex-shrink-0 text-xl font-bold text-gray-900 tracking-tight">
-                        DOSC Group
+                    <Link href="/" class="flex-shrink-0">
+                        <img v-if="site.logo_url" :src="site.logo_url" :alt="site.site_name" class="h-9 w-auto object-contain"/>
+                        <span v-else class="text-xl font-bold text-gray-900 tracking-tight">{{ site.site_name ?? 'DOSC Group' }}</span>
                     </Link>
 
                     <!-- Desktop Nav -->
@@ -152,28 +158,26 @@ function closeMobile() {
 
                     <!-- Brand Block -->
                     <div class="lg:col-span-1">
-                        <p class="text-white text-xl font-bold leading-snug">
-                            DOSC Group<br>
-                            <span class="text-gray-400 text-base font-normal">ทำเว็บไซต์ให้เป็นเรื่องง่ายสำหรับคุณ</span>
-                        </p>
+                        <!-- Logo dark or site name -->
+                        <div class="mb-2">
+                            <img v-if="site.logo_dark_url" :src="site.logo_dark_url" :alt="site.site_name" class="h-10 w-auto object-contain"/>
+                            <img v-else-if="site.logo_url" :src="site.logo_url" :alt="site.site_name" class="h-10 w-auto object-contain"/>
+                            <p v-else class="text-white text-xl font-bold">{{ site.site_name ?? 'DOSC Group' }}</p>
+                        </div>
+                        <p v-if="site.tagline" class="text-gray-400 text-sm leading-snug">{{ site.tagline }}</p>
 
-                        <!-- Social Icons -->
-                        <div class="flex items-center gap-3 mt-6">
-                            <a href="#" target="_blank" rel="noopener"
-                               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-blue-600 text-gray-300 hover:text-white transition">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                            </a>
-                            <a href="tel:081-689-9976"
-                               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-green-500 text-gray-300 hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.338c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 4c.828 0 1.655.063 2.465.188C9.65 4.371 10.5 5.4 10.5 6.584v3.33c0 1.007-.603 1.927-1.548 2.308L7.3 12.92c.618 1.3 1.556 2.455 2.72 3.32l.703-1.65c.38-.946 1.3-1.549 2.308-1.549h3.33c1.184 0 2.213.85 2.396 2.035.125.81.188 1.637.188 2.465 0 .569-.044 1.127-.132 1.668-.09 1.174-1.076 2.085-2.254 2.085C9.11 22.5 1.5 14.89 1.5 5.5c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 3"/></svg>
-                            </a>
-                            <a href="mailto:info@dosc.co.th"
-                               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-red-500 text-gray-300 hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
-                            </a>
-                            <a href="https://line.me/ti/p/@dosc" target="_blank" rel="noopener"
-                               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-green-400 text-gray-300 hover:text-white transition">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="m12 .5c-6.615 0-12 4.398-12 9.803 0 4.841 4.27 8.897 10.035 9.608.391.084.922.258 1.057.593.12.301.079.771.038 1.073l-.164 1.013c-.045.301-.24 1.186 1.049.647 1.291-.539 6.916-4.103 9.436-7.023 1.724-1.952 2.549-3.965 2.549-6.311 0-5.405-5.385-9.803-12-9.803z"/></svg>
+                        <!-- Dynamic social icons -->
+                        <div v-if="socialLinks.length" class="flex items-center flex-wrap gap-2 mt-5">
+                            <a v-for="link in socialLinks" :key="link.id"
+                               :href="link.url || '#'"
+                               :target="link.url ? '_blank' : undefined"
+                               rel="noopener noreferrer"
+                               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition"
+                               :style="`--hover-bg: ${link.color}`"
+                               @mouseenter="$event.currentTarget.style.background = link.color"
+                               @mouseleave="$event.currentTarget.style.background = ''">
+                                <SocialIcon :platform="link.platform" :icon-type="link.icon_type"
+                                            :icon-value="link.icon_value" :icon-url="link.icon_url" size="md"/>
                             </a>
                         </div>
                     </div>
@@ -182,21 +186,19 @@ function closeMobile() {
                     <div>
                         <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">ติดต่อเรา</h4>
                         <ul class="space-y-3 text-sm">
-                            <li class="flex items-center gap-3">
+                            <li v-if="site.phone" class="flex items-center gap-3">
                                 <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.338c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 4c.828 0 1.655.063 2.465.188C9.65 4.371 10.5 5.4 10.5 6.584v3.33c0 1.007-.603 1.927-1.548 2.308L7.3 12.92c.618 1.3 1.556 2.455 2.72 3.32l.703-1.65c.38-.946 1.3-1.549 2.308-1.549h3.33c1.184 0 2.213.85 2.396 2.035.125.81.188 1.637.188 2.465 0 .569-.044 1.127-.132 1.668-.09 1.174-1.076 2.085-2.254 2.085C9.11 22.5 1.5 14.89 1.5 5.5c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 3"/></svg>
-                                <a href="tel:081-689-9976" class="hover:text-white transition">081-689-9976</a>
+                                <a :href="`tel:${site.phone}`" class="hover:text-white transition">{{ site.phone }}</a>
                             </li>
-                            <li class="flex items-center gap-3">
-                                <svg class="w-4 h-4 text-green-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="m12 .5c-6.615 0-12 4.398-12 9.803 0 4.841 4.27 8.897 10.035 9.608.391.084.922.258 1.057.593.12.301.079.771.038 1.073l-.164 1.013c-.045.301-.24 1.186 1.049.647 1.291-.539 6.916-4.103 9.436-7.023 1.724-1.952 2.549-3.965 2.549-6.311 0-5.405-5.385-9.803-12-9.803z"/></svg>
-                                <a href="https://line.me/ti/p/@dosc" target="_blank" rel="noopener" class="hover:text-white transition">LINE: @dosc</a>
-                            </li>
-                            <li class="flex items-center gap-3">
+                            <li v-if="site.email" class="flex items-center gap-3">
                                 <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
-                                <a href="mailto:info@dosc.co.th" class="hover:text-white transition">info@dosc.co.th</a>
+                                <a :href="`mailto:${site.email}`" class="hover:text-white transition">{{ site.email }}</a>
                             </li>
-                            <li class="flex items-start gap-3">
+                            <li v-if="site.address" class="flex items-start gap-3">
                                 <svg class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                                <span class="leading-relaxed">กรุงเทพมหานคร ประเทศไทย</span>
+                                <a v-if="site.google_map_url" :href="site.google_map_url" target="_blank" rel="noopener"
+                                   class="leading-relaxed hover:text-white transition">{{ site.address }}</a>
+                                <span v-else class="leading-relaxed">{{ site.address }}</span>
                             </li>
                         </ul>
                     </div>
@@ -219,7 +221,7 @@ function closeMobile() {
             <!-- Footer Bottom Bar -->
             <div class="border-t border-gray-800">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-                    <span>&copy; {{ new Date().getFullYear() }} DOSC Group Co., Ltd. All rights reserved.</span>
+                    <span>&copy; {{ new Date().getFullYear() }} {{ site.site_name ?? 'DOSC Group' }}. All rights reserved.</span>
                     <Link href="/privacy-policy" class="hover:text-gray-300 transition">นโยบายความเป็นส่วนตัว</Link>
                 </div>
             </div>

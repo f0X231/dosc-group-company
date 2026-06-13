@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PackageAddonController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\SiteSettingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -49,6 +50,14 @@ Route::get('/privacy-policy', fn () => Inertia::render('PrivacyPolicy'))->name('
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
+    // Site Settings
+    Route::get('/settings', [SiteSettingController::class, 'index'])->name('settings');
+    Route::post('/settings/general', [SiteSettingController::class, 'saveGeneral'])->name('settings.general');
+    Route::post('/settings/contact', [SiteSettingController::class, 'saveContact'])->name('settings.contact');
+    Route::post('/settings/social', [SiteSettingController::class, 'storeSocial'])->name('settings.social.store');
+    Route::post('/settings/social/{socialLink}', [SiteSettingController::class, 'updateSocial'])->name('settings.social.update');
+    Route::delete('/settings/social/{socialLink}', [SiteSettingController::class, 'destroySocial'])->name('settings.social.destroy');
+    Route::post('/settings/social/reorder', [SiteSettingController::class, 'reorderSocial'])->name('settings.social.reorder');
     // Hero Banner
     Route::get('/hero-banner', [HeroBannerController::class, 'index'])->name('hero-banner');
     Route::get('/hero-banner/create', [HeroBannerController::class, 'create'])->name('hero-banner.create');

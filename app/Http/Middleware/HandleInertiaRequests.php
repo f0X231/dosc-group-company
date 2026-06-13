@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Models\Contact;
+use App\Models\SiteSetting;
+use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -38,6 +40,8 @@ class HandleInertiaRequests extends Middleware
             'unreadContactsCount' => $request->user()
                 ? Contact::unread()->count()
                 : 0,
+            'site'        => fn () => SiteSetting::current(),
+            'socialLinks' => fn () => SocialLink::active()->orderBy('sort_order')->get(),
         ];
     }
 }
