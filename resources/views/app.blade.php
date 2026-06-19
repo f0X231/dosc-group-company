@@ -6,6 +6,16 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        @php $favicon = \App\Models\SiteSetting::current()->favicon_url; @endphp
+        @if($favicon)
+            <link rel="icon" type="image/png" href="{{ $favicon }}"/>
+            <link rel="shortcut icon" href="{{ $favicon }}"/>
+            <link rel="apple-touch-icon" href="{{ $favicon }}"/>
+        @else
+            <link rel="icon" href="/favicon.ico"/>
+        @endif
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

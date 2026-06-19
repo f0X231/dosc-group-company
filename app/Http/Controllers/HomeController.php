@@ -26,11 +26,10 @@ class HomeController extends Controller
 
         $services = Service::active()
             ->orderBy('sort_order')
-            ->get(['id', 'title', 'subtitle', 'description', 'icon_name', 'image_url', 'cta_text', 'cta_url', 'badge_text', 'badge_color']);
+            ->get(['id', 'title', 'subtitle', 'description', 'icon_name', 'image_url', 'cta_text', 'cta_url', 'badge_text', 'badge_color', 'card_bg_color']);
 
         $portfolios = Portfolio::active()
             ->orderBy('sort_order')
-            ->limit(12)
             ->get(['id', 'title', 'package_name', 'thumbnail_url', 'client_url']);
 
         $packages = Package::active()

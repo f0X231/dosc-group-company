@@ -65,7 +65,10 @@ class ServiceController extends Controller
 
     public function reorder(Request $request)
     {
-        $request->validate(['ids' => 'required|array', 'ids.*' => 'integer']);
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'required|integer|exists:services,id',
+        ]);
 
         foreach ($request->ids as $order => $id) {
             Service::where('id', $id)->update(['sort_order' => $order]);
@@ -85,9 +88,10 @@ class ServiceController extends Controller
             'icon_name'   => 'nullable|string|max:50',
             'cta_text'    => 'nullable|string|max:100',
             'cta_url'     => 'nullable|string|max:500',
-            'badge_text'  => 'nullable|string|max:50',
-            'badge_color' => 'nullable|string|max:30',
-            'status'      => 'required|in:active,inactive',
+            'badge_text'    => 'nullable|string|max:50',
+            'badge_color'   => 'nullable|string|max:30',
+            'card_bg_color' => 'nullable|string|max:30',
+            'status'        => 'required|in:active,inactive',
         ]);
     }
 

@@ -131,7 +131,7 @@ class PackageController extends Controller
 
         foreach ($features as $index => $f) {
             if (!empty($f['id'])) {
-                PackageFeature::where('id', $f['id'])->update([
+                PackageFeature::where('id', $f['id'])->where('package_id', $package->id)->update([
                     'title'          => $f['title'],
                     'description'    => $f['description'] ?? null,
                     'type'           => $f['type'] ?? 'included',

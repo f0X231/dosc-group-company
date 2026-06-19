@@ -157,7 +157,11 @@ class PortfolioController extends Controller
 
     public function reorder(Request $request)
     {
-        $request->validate(['items' => 'required|array']);
+        $request->validate([
+            'items'             => 'required|array',
+            'items.*.id'        => 'required|exists:portfolios,id',
+            'items.*.sort_order' => 'required|integer|min:0',
+        ]);
 
         foreach ($request->items as $item) {
             Portfolio::where('id', $item['id'])->update(['sort_order' => $item['sort_order']]);

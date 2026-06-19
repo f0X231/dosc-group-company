@@ -146,8 +146,8 @@ class BlogController extends Controller
             'meta_description' => 'nullable|string|max:160',
             'meta_keywords'    => 'nullable|string|max:255',
             'canonical_url'    => 'nullable|string|max:500',
-            'head_script'      => 'nullable|string',
-            'body_script'      => 'nullable|string',
+            'head_script'      => 'nullable|string|max:50000',
+            'body_script'      => 'nullable|string|max:50000',
             'og_image_url'     => 'nullable|string|max:500',
         ]);
     }

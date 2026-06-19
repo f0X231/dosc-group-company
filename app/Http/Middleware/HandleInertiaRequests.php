@@ -35,7 +35,8 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user'        => $request->user(),
+                'permissions' => fn () => $request->user()?->getPermissions() ?? [],
             ],
             'unreadContactsCount' => $request->user()
                 ? Contact::unread()->count()

@@ -55,16 +55,17 @@ const editingId    = ref(null);
 const imagePreview = ref(null);
 
 const form = useForm({
-    title:       '',
-    subtitle:    '',
-    description: '',
-    icon_name:   'globe',
-    cta_text:    'ดูรายละเอียด',
-    cta_url:     '',
-    badge_text:  '',
-    badge_color: '#7c1d1d',
-    status:      'active',
-    image:       null,
+    title:         '',
+    subtitle:      '',
+    description:   '',
+    icon_name:     'globe',
+    cta_text:      'ดูผลงาน',
+    cta_url:       '/portfolio',
+    badge_text:    '',
+    badge_color:   '#7c1d1d',
+    card_bg_color: '#ede9fe',
+    status:        'active',
+    image:         null,
 });
 
 function openAdd() {
@@ -81,15 +82,16 @@ function openAdd() {
 function openEdit(s) {
     editingId.value = s.id;
     imagePreview.value = s.image_url ?? null;
-    form.title       = s.title;
-    form.subtitle    = s.subtitle ?? '';
-    form.description = s.description ?? '';
-    form.icon_name   = s.icon_name ?? 'globe';
-    form.cta_text    = s.cta_text ?? 'ดูรายละเอียด';
-    form.cta_url     = s.cta_url ?? '';
-    form.badge_text  = s.badge_text ?? '';
-    form.badge_color = s.badge_color ?? '#7c1d1d';
-    form.status      = s.status;
+    form.title         = s.title;
+    form.subtitle      = s.subtitle ?? '';
+    form.description   = s.description ?? '';
+    form.icon_name     = s.icon_name ?? 'globe';
+    form.cta_text      = s.cta_text ?? 'ดูผลงาน';
+    form.cta_url       = s.cta_url ?? '/portfolio';
+    form.badge_text    = s.badge_text ?? '';
+    form.badge_color   = s.badge_color ?? '#7c1d1d';
+    form.card_bg_color = s.card_bg_color ?? '#ede9fe';
+    form.status        = s.status;
     form.image       = null;
     panelOpen.value  = true;
 }
@@ -342,6 +344,21 @@ function destroy(s) {
                                                class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm font-kanit focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"/>
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- Card background color -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 font-kanit mb-1">สีพื้นหลัง Card (Slider)</label>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" v-model="form.card_bg_color"
+                                           class="w-10 h-9 rounded border border-gray-300 cursor-pointer p-0.5"/>
+                                    <input v-model="form.card_bg_color" type="text"
+                                           class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm font-kanit focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                                           placeholder="#ede9fe"/>
+                                    <div class="w-9 h-9 rounded-lg border border-gray-200 flex-shrink-0"
+                                         :style="`background: ${form.card_bg_color}`"/>
+                                </div>
+                                <p class="mt-1 text-xs text-gray-400 font-kanit">สีพื้นหลังของ card ในส่วน slider หน้าแรก</p>
                             </div>
 
                             <!-- Status -->

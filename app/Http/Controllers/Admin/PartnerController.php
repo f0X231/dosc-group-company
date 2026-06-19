@@ -106,7 +106,7 @@ class PartnerController extends Controller
     {
         if (! $request->hasFile('logo')) return;
 
-        $request->validate(['logo' => 'file|mimes:jpeg,jpg,png,gif,webp,svg|max:2048']);
+        $request->validate(['logo' => 'file|mimes:jpeg,jpg,png,gif,webp|max:2048']);
 
         if ($partner->logo_path) {
             $this->storage->delete($partner->logo_path);
