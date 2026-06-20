@@ -21,7 +21,7 @@ class RolePermission extends Model
         return [
             'dashboard', 'hero_banner', 'services', 'portfolio', 'blog',
             'packages', 'partners', 'testimonials', 'faq', 'contacts',
-            'settings', 'users', 'roles',
+            'settings', 'seo', 'users', 'roles',
         ];
     }
 
@@ -39,6 +39,7 @@ class RolePermission extends Model
             'faq'          => 'จัดการ FAQ',
             'contacts'     => 'ข้อความติดต่อ',
             'settings'     => 'ตั้งค่าเว็บไซต์',
+            'seo'          => 'จัดการ SEO',
             'users'        => 'จัดการผู้ใช้',
             'roles'        => 'จัดการสิทธิ์',
         ];
@@ -48,7 +49,7 @@ class RolePermission extends Model
     {
         return [
             ['label' => 'เนื้อหาหน้าเว็บ', 'keys' => ['hero_banner', 'services', 'portfolio', 'blog', 'packages', 'partners', 'testimonials', 'faq']],
-            ['label' => 'จัดการระบบ',       'keys' => ['contacts', 'settings']],
+            ['label' => 'จัดการระบบ',       'keys' => ['contacts', 'settings', 'seo']],
             ['label' => 'ผู้ใช้และสิทธิ์',   'keys' => ['users', 'roles']],
         ];
     }

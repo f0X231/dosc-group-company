@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const props = defineProps({
@@ -218,7 +218,6 @@ function formatPrice(n) {
 </script>
 
 <template>
-    <Head title="หน้าแรก" />
     <PublicLayout>
 
         <!-- ══════════════════════════════════════════════════════
@@ -321,7 +320,7 @@ function formatPrice(n) {
             <div class="max-w-7xl mx-auto px-6 lg:px-8 mb-10">
                 <div class="text-center">
                     <p class="text-xs font-bold tracking-widest uppercase text-red-700 mb-2">OUR SERVICES</p>
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 font-kanit">บริการของเรา</h2>
+                    <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">บริการของเรา</h2>
                     <p class="mt-3 text-gray-500 text-base font-kanit max-w-xl mx-auto">ทีมงานมืออาชีพพร้อมดูแลคุณตั้งแต่ต้นจนจบโปรเจกต์</p>
                 </div>
             </div>
@@ -441,7 +440,7 @@ function formatPrice(n) {
 
                 <!-- Heading -->
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 font-kanit mb-3">ผลงานของเรา</h2>
+                    <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit mb-3">ผลงานของเรา</h2>
                     <p class="text-gray-500 font-kanit text-sm lg:text-base max-w-xl mx-auto leading-relaxed">
                         จากประสบการณ์มากกว่า 10 ปี การันตีด้วยผลงานจริง ไม่มีม็อคอัพ ให้เว็บไซต์ทำงานได้จริงตลอด 24 ชม.
                     </p>
@@ -524,7 +523,7 @@ function formatPrice(n) {
         <section v-if="packages.length" class="py-16 lg:py-24 bg-gray-50">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 font-kanit">แพ็กเกจของเรา</h2>
+                    <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">แพ็กเกจของเรา</h2>
                     <p class="mt-3 text-gray-500 font-kanit">เลือก package ที่เหมาะกับธุรกิจของคุณ ราคายังไม่รวม VAT 7%</p>
                 </div>
 
@@ -678,7 +677,7 @@ function formatPrice(n) {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
                 <!-- Title -->
-                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 font-kanit mb-8">ทำไมต้องเลือกเรา</h2>
+                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit mb-8">ทำไมต้องเลือกเรา</h2>
 
                 <!-- Large feature card -->
                 <div class="bg-gray-50 rounded-3xl overflow-hidden shadow-sm mb-6">
@@ -804,7 +803,7 @@ function formatPrice(n) {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
                 <!-- Title -->
-                <h2 class="text-2xl lg:text-3xl font-bold text-white font-kanit mb-8">
+                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white font-kanit mb-8">
                     {{ partnerSettings.heading ?? 'ลูกค้าที่ให้ความไว้วางใจกับเรา' }}
                 </h2>
 
@@ -902,7 +901,7 @@ function formatPrice(n) {
                         <p class="text-xs font-bold tracking-widest uppercase text-white/60 mb-3">
                             {{ testimonialSettings.label ?? 'TESTIMONIALS' }}
                         </p>
-                        <h2 class="text-4xl lg:text-5xl font-bold text-white font-kanit mb-8">
+                        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white font-kanit mb-8">
                             {{ testimonialSettings.heading ?? 'กำลังใจสำคัญของเรา' }}
                         </h2>
 
@@ -1052,7 +1051,7 @@ function formatPrice(n) {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex items-end justify-between mb-10">
                     <div>
-                        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 font-kanit">บทความ</h2>
+                        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">บทความ</h2>
                     </div>
                     <Link href="/blog"
                           class="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-red-700 hover:text-red-900 font-kanit transition">

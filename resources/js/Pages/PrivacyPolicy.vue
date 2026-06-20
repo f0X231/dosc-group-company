@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const page = usePage();
@@ -116,7 +116,6 @@ const sections = [
 </script>
 
 <template>
-    <Head title="นโยบายความเป็นส่วนตัว | DOSC Group"/>
     <PublicLayout>
 
         <!-- Page Header -->

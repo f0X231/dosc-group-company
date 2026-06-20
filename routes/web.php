@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\PageSeoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -174,6 +175,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
         Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])->name('faq.destroy');
         Route::patch('/faq/{faq}/toggle', [AdminFaqController::class, 'toggleStatus'])->name('faq.toggle');
         Route::post('/faq/reorder', [AdminFaqController::class, 'reorder'])->name('faq.reorder');
+    });
+
+    // SEO
+    Route::middleware('admin.permission:seo')->group(function () {
+        Route::get('/seo', [PageSeoController::class, 'index'])->name('seo');
+        Route::post('/seo/{pageSeo}', [PageSeoController::class, 'update'])->name('seo.update');
+        Route::delete('/seo/{pageSeo}/og-image', [PageSeoController::class, 'deleteOgImage'])->name('seo.og-image.delete');
     });
 
     // Users (super_admin / admin.permission:users)

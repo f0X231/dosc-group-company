@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 defineProps({
@@ -15,7 +14,6 @@ function toggle(id) {
 </script>
 
 <template>
-    <Head title="คำถามที่พบบ่อย" />
     <PublicLayout>
 
         <!-- Page Header -->

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
@@ -21,7 +21,6 @@ function submit() {
 </script>
 
 <template>
-    <Head title="ติดต่อเรา" />
     <PublicLayout>
 
         <!-- Page Header -->

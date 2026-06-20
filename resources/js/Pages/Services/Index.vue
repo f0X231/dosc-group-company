@@ -1,10 +1,9 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 </script>
 
 <template>
-    <Head title="บริการและราคา" />
     <PublicLayout>
         <!-- Page Header -->
         <section class="bg-gray-50 py-16 text-center">

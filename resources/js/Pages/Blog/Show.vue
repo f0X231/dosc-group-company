@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const props = defineProps({
@@ -51,20 +51,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <Head>
-        <title>{{ blog.meta_title || blog.title }}</title>
-        <meta name="description" :content="blog.meta_description || blog.excerpt"/>
-        <meta v-if="blog.meta_keywords" name="keywords" :content="blog.meta_keywords"/>
-        <link v-if="blog.canonical_url" rel="canonical" :href="blog.canonical_url"/>
-        <!-- OG -->
-        <meta property="og:title"       :content="blog.meta_title || blog.title"/>
-        <meta property="og:description" :content="blog.meta_description || blog.excerpt"/>
-        <meta v-if="blog.og_image_url || blog.cover_image_url"
-              property="og:image"
-              :content="blog.og_image_url || blog.cover_image_url"/>
-        <meta property="og:type" content="article"/>
-    </Head>
-
     <PublicLayout>
 
         <!-- Article header -->

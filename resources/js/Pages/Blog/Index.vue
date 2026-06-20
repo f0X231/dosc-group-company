@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const props = defineProps({
@@ -23,7 +23,6 @@ function formatDate(d) {
 </script>
 
 <template>
-    <Head title="บทความ" />
     <PublicLayout>
 
         <!-- Page header -->

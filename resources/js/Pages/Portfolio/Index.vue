@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const props = defineProps({
@@ -27,13 +26,11 @@ function onMouseLeave(e) {
 </script>
 
 <template>
-    <Head title="ผลงานของเรา" />
     <PublicLayout>
 
         <!-- Hero -->
         <section class="bg-gray-50 py-16 text-center font-kanit">
-            <p class="text-sm font-medium text-green-600 tracking-widest uppercase mb-3">Portfolio</p>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">ผลงานของเรา</h1>
+            <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">ผลงานของเรา</h1>
             <p class="mt-3 text-gray-500 max-w-xl mx-auto text-sm md:text-base">
                 ผลงานเว็บไซต์ที่เราออกแบบและพัฒนาให้กับลูกค้า ครอบคลุมหลากหลายธุรกิจ
             </p>
@@ -77,7 +74,7 @@ function onMouseLeave(e) {
                 </div>
 
                 <!-- Grid (vertical 9:16 cards) -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     <div
                         v-for="item in filtered"
                         :key="item.id"

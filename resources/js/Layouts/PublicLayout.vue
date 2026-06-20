@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import SocialIcon from '@/Components/SocialIcon.vue';
+import SeoHead from '@/Components/SeoHead.vue';
 
 const mobileOpen = ref(false);
 const portfolioOpen = ref(false);
@@ -21,6 +22,7 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
 </script>
 
 <template>
+    <SeoHead />
     <div class="min-h-screen flex flex-col font-kanit">
 
         <!-- ── Navbar ───────────────────────────────────────────────────────── -->
@@ -150,32 +152,66 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
         </main>
 
         <!-- ── Footer ───────────────────────────────────────────────────────── -->
-        <footer class="bg-gray-900 text-gray-300 font-kanit">
+        <footer class="bg-gray-950 text-gray-400 font-kanit overflow-hidden">
 
-            <!-- Main Footer -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- CTA Band -->
+            <div class="relative bg-red-800 overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-red-600 opacity-30 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-red-950 opacity-60 blur-3xl pointer-events-none"></div>
+                <div class="absolute inset-0 opacity-[0.07]"
+                     style="background-image: radial-gradient(circle, #fff 1.5px, transparent 1.5px); background-size: 28px 28px;"></div>
+
+                <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-14 flex flex-col lg:flex-row items-center justify-between gap-8">
+                    <div>
+                        <p class="text-red-300 text-xs font-semibold uppercase tracking-widest mb-2">เริ่มต้นได้วันนี้</p>
+                        <h2 class="text-3xl lg:text-4xl font-bold text-white leading-tight">
+                            พร้อมสร้างเว็บไซต์<br class="hidden sm:block">ที่ใช่สำหรับธุรกิจคุณ?
+                        </h2>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0">
+                        <a :href="site.phone ? `tel:${site.phone}` : '/contact'"
+                           class="inline-flex items-center gap-2.5 bg-white text-red-800 font-bold px-8 py-4 rounded-full text-base shadow-2xl hover:bg-red-50 hover:scale-105 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.338c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 4c.828 0 1.655.063 2.465.188C9.65 4.371 10.5 5.4 10.5 6.584v3.33c0 1.007-.603 1.927-1.548 2.308L7.3 12.92c.618 1.3 1.556 2.455 2.72 3.32l.703-1.65c.38-.946 1.3-1.549 2.308-1.549h3.33c1.184 0 2.213.85 2.396 2.035.125.81.188 1.637.188 2.465 0 .569-.044 1.127-.132 1.668-.09 1.174-1.076 2.085-2.254 2.085C9.11 22.5 1.5 14.89 1.5 5.5c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 3"/></svg>
+                            โทรปรึกษาฟรี
+                        </a>
+                        <Link href="/contact"
+                           class="inline-flex items-center gap-2 border-2 border-white/30 text-white font-semibold px-7 py-4 rounded-full text-base hover:border-white hover:bg-white/10 transition-all">
+                            ส่งข้อความหาเรา
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gradient accent line -->
+            <div class="h-px bg-gradient-to-r from-red-700 via-red-800/50 to-transparent"></div>
+
+            <!-- Main Footer Content -->
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+                <!-- Subtle dot pattern -->
+                <div class="absolute inset-0 opacity-[0.025] pointer-events-none"
+                     style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 36px 36px;"></div>
+
+                <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
                     <!-- Brand Block -->
-                    <div class="lg:col-span-1">
-                        <!-- Logo dark or site name -->
-                        <div class="mb-2">
-                            <img v-if="site.logo_dark_url" :src="site.logo_dark_url" :alt="site.site_name" class="h-10 w-auto object-contain"/>
-                            <img v-else-if="site.logo_url" :src="site.logo_url" :alt="site.site_name" class="h-10 w-auto object-contain"/>
-                            <p v-else class="text-white text-xl font-bold">{{ site.site_name ?? 'DOSC Group' }}</p>
+                    <div class="lg:col-span-2">
+                        <div class="mb-4">
+                            <img v-if="site.logo_dark_url" :src="site.logo_dark_url" :alt="site.site_name" class="h-11 w-auto object-contain"/>
+                            <img v-else-if="site.logo_url" :src="site.logo_url" :alt="site.site_name" class="h-11 w-auto object-contain"/>
+                            <p v-else class="text-white text-2xl font-bold tracking-tight">{{ site.site_name ?? 'DOSC Group' }}</p>
                         </div>
-                        <p v-if="site.tagline" class="text-gray-400 text-sm leading-snug">{{ site.tagline }}</p>
+                        <p v-if="site.tagline" class="text-gray-500 text-sm leading-relaxed max-w-sm mb-7">{{ site.tagline }}</p>
 
-                        <!-- Dynamic social icons -->
-                        <div v-if="socialLinks.length" class="flex items-center flex-wrap gap-2 mt-5">
+                        <!-- Social Icons -->
+                        <div v-if="socialLinks.length" class="flex items-center flex-wrap gap-2.5">
                             <a v-for="link in socialLinks" :key="link.id"
                                :href="link.url || '#'"
                                :target="link.url ? '_blank' : undefined"
                                rel="noopener noreferrer"
-                               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition"
-                               :style="`--hover-bg: ${link.color}`"
-                               @mouseenter="$event.currentTarget.style.background = link.color"
-                               @mouseleave="$event.currentTarget.style.background = ''">
+                               class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-900 border border-gray-800 text-gray-500 hover:text-white hover:border-red-700 hover:bg-red-900/30 transition-all"
+                               @mouseenter="$event.currentTarget.style.borderColor = link.color; $event.currentTarget.style.color = link.color"
+                               @mouseleave="$event.currentTarget.style.borderColor = ''; $event.currentTarget.style.color = ''">
                                 <SocialIcon :platform="link.platform" :icon-type="link.icon_type"
                                             :icon-value="link.icon_value" :icon-url="link.icon_url" size="md"/>
                             </a>
@@ -184,20 +220,29 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
 
                     <!-- Contact Block -->
                     <div>
-                        <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">ติดต่อเรา</h4>
-                        <ul class="space-y-3 text-sm">
-                            <li v-if="site.phone" class="flex items-center gap-3">
-                                <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.338c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 4c.828 0 1.655.063 2.465.188C9.65 4.371 10.5 5.4 10.5 6.584v3.33c0 1.007-.603 1.927-1.548 2.308L7.3 12.92c.618 1.3 1.556 2.455 2.72 3.32l.703-1.65c.38-.946 1.3-1.549 2.308-1.549h3.33c1.184 0 2.213.85 2.396 2.035.125.81.188 1.637.188 2.465 0 .569-.044 1.127-.132 1.668-.09 1.174-1.076 2.085-2.254 2.085C9.11 22.5 1.5 14.89 1.5 5.5c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 3"/></svg>
-                                <a :href="`tel:${site.phone}`" class="hover:text-white transition">{{ site.phone }}</a>
+                        <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-6 flex items-center gap-2.5">
+                            <span class="w-6 h-0.5 bg-red-600 rounded-full"></span>
+                            ติดต่อเรา
+                        </h4>
+                        <ul class="space-y-4 text-sm">
+                            <li v-if="site.phone" class="flex items-center gap-3 group">
+                                <div class="w-9 h-9 flex-shrink-0 rounded-lg bg-red-950/60 border border-red-900/40 flex items-center justify-center group-hover:bg-red-800 group-hover:border-red-700 transition-all">
+                                    <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.338c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 4c.828 0 1.655.063 2.465.188C9.65 4.371 10.5 5.4 10.5 6.584v3.33c0 1.007-.603 1.927-1.548 2.308L7.3 12.92c.618 1.3 1.556 2.455 2.72 3.32l.703-1.65c.38-.946 1.3-1.549 2.308-1.549h3.33c1.184 0 2.213.85 2.396 2.035.125.81.188 1.637.188 2.465 0 .569-.044 1.127-.132 1.668-.09 1.174-1.076 2.085-2.254 2.085C9.11 22.5 1.5 14.89 1.5 5.5c0-1.178.91-2.164 2.085-2.255A17.97 17.97 0 0 1 6 3"/></svg>
+                                </div>
+                                <a :href="`tel:${site.phone}`" class="hover:text-white transition-colors">{{ site.phone }}</a>
                             </li>
-                            <li v-if="site.email" class="flex items-center gap-3">
-                                <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
-                                <a :href="`mailto:${site.email}`" class="hover:text-white transition">{{ site.email }}</a>
+                            <li v-if="site.email" class="flex items-center gap-3 group">
+                                <div class="w-9 h-9 flex-shrink-0 rounded-lg bg-red-950/60 border border-red-900/40 flex items-center justify-center group-hover:bg-red-800 group-hover:border-red-700 transition-all">
+                                    <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+                                </div>
+                                <a :href="`mailto:${site.email}`" class="hover:text-white transition-colors break-all">{{ site.email }}</a>
                             </li>
-                            <li v-if="site.address" class="flex items-start gap-3">
-                                <svg class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                            <li v-if="site.address" class="flex items-start gap-3 group">
+                                <div class="w-9 h-9 flex-shrink-0 rounded-lg bg-red-950/60 border border-red-900/40 flex items-center justify-center group-hover:bg-red-800 group-hover:border-red-700 transition-all mt-0.5">
+                                    <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                                </div>
                                 <a v-if="site.google_map_url" :href="site.google_map_url" target="_blank" rel="noopener"
-                                   class="leading-relaxed hover:text-white transition">{{ site.address }}</a>
+                                   class="leading-relaxed hover:text-white transition-colors">{{ site.address }}</a>
                                 <span v-else class="leading-relaxed">{{ site.address }}</span>
                             </li>
                         </ul>
@@ -205,24 +250,38 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
 
                     <!-- Links Block -->
                     <div>
-                        <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">เมนู</h4>
-                        <ul class="space-y-2.5 text-sm">
-                            <li><Link href="/portfolio" class="hover:text-white transition">ผลงาน</Link></li>
-                            <li><Link href="/services" class="hover:text-white transition">บริการและราคา</Link></li>
-                            <li><Link href="/services/google-ads" class="hover:text-white transition">รับทำ Google Ads</Link></li>
-                            <li><Link href="/faq" class="hover:text-white transition">คำถามที่พบบ่อย</Link></li>
-                            <li><Link href="/blog" class="hover:text-white transition">บทความ</Link></li>
-                            <li><Link href="/privacy-policy" class="hover:text-white transition">นโยบายความเป็นส่วนตัว</Link></li>
+                        <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-6 flex items-center gap-2.5">
+                            <span class="w-6 h-0.5 bg-red-600 rounded-full"></span>
+                            เมนู
+                        </h4>
+                        <ul class="space-y-3 text-sm">
+                            <li v-for="(item, i) in [
+                                { href: '/portfolio', label: 'ผลงาน' },
+                                { href: '/services', label: 'บริการและราคา' },
+                                { href: '/services/google-ads', label: 'รับทำ Google Ads' },
+                                { href: '/faq', label: 'คำถามที่พบบ่อย' },
+                                { href: '/blog', label: 'บทความ' },
+                                { href: '/privacy-policy', label: 'นโยบายความเป็นส่วนตัว' },
+                            ]" :key="i">
+                                <Link :href="item.href"
+                                      class="inline-flex items-center gap-2 group hover:text-white transition-colors">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-700 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"></span>
+                                    <span class="group-hover:translate-x-0.5 transition-transform">{{ item.label }}</span>
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <!-- Footer Bottom Bar -->
-            <div class="border-t border-gray-800">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-                    <span>&copy; {{ new Date().getFullYear() }} {{ site.site_name ?? 'DOSC Group' }}. All rights reserved.</span>
-                    <Link href="/privacy-policy" class="hover:text-gray-300 transition">นโยบายความเป็นส่วนตัว</Link>
+            <div class="border-t border-gray-800/50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <span class="text-xs text-gray-600">&copy; {{ new Date().getFullYear() }} {{ site.site_name ?? 'DOSC Group' }}. All rights reserved.</span>
+                    <div class="flex items-center gap-5 text-xs text-gray-600">
+                        <span>Designed &amp; Built by <span class="text-gray-500 font-medium">DOSC Group</span></span>
+                        <Link href="/privacy-policy" class="hover:text-gray-400 transition-colors">นโยบายความเป็นส่วนตัว</Link>
+                    </div>
                 </div>
             </div>
         </footer>

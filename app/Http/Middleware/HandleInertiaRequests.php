@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Contact;
+use App\Models\PageSeo;
 use App\Models\SiteSetting;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
@@ -43,6 +44,10 @@ class HandleInertiaRequests extends Middleware
                 : 0,
             'site'        => fn () => SiteSetting::current(),
             'socialLinks' => fn () => SocialLink::active()->orderBy('sort_order')->get(),
+            'seo'         => function () use ($request) {
+                $key = $request->route()?->getName();
+                return $key ? PageSeo::getCachedByKey($key) : null;
+            },
         ];
     }
 }

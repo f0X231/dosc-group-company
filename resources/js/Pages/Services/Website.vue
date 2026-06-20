@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 const props = defineProps({
@@ -67,7 +67,6 @@ const ICON_PATHS = {
 </script>
 
 <template>
-    <Head title="รับทำเว็บไซต์ | บริการของเรา"/>
     <PublicLayout>
 
         <!-- ══════════════════════════════════════════════════════
