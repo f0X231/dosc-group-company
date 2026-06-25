@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
-defineProps({
+const props = defineProps({
     faqs: { type: Array, default: () => [] },
 });
 
@@ -11,6 +11,9 @@ const openId = ref(null);
 function toggle(id) {
     openId.value = openId.value === id ? null : id;
 }
+
+const leftFaqs  = computed(() => props.faqs.slice(0, Math.ceil(props.faqs.length / 2)));
+const rightFaqs = computed(() => props.faqs.slice(Math.ceil(props.faqs.length / 2)));
 </script>
 
 <template>
@@ -19,59 +22,98 @@ function toggle(id) {
         <!-- Page Header -->
         <section class="bg-gray-50 py-14 text-center border-b border-gray-200">
             <div class="max-w-3xl mx-auto px-4">
-                <p class="text-sm font-medium text-green-500 uppercase tracking-widest mb-2">FAQ</p>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">คำถามที่พบบ่อย</h1>
+                <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">คำถามที่พบบ่อย</h1>
                 <p class="mt-3 text-gray-500 text-base">รวบรวมคำถามที่ลูกค้าสอบถามบ่อย หากมีข้อสงสัยเพิ่มเติมสามารถติดต่อเราได้เลย</p>
             </div>
         </section>
 
         <!-- Accordion -->
         <section class="py-14 bg-white">
-            <div class="max-w-3xl mx-auto px-4 space-y-3">
+            <div class="max-w-7xl mx-auto px-4">
 
                 <!-- Empty state -->
                 <div v-if="faqs.length === 0" class="text-center py-16 text-gray-400">
                     ยังไม่มีคำถามที่พบบ่อยในขณะนี้
                 </div>
 
-                <!-- FAQ Items -->
-                <div
-                    v-for="faq in faqs"
-                    :key="faq.id"
-                    class="border border-gray-200 rounded-xl overflow-hidden transition-shadow"
-                    :class="openId === faq.id ? 'shadow-md' : 'hover:shadow-sm'"
-                >
-                    <!-- Question (Summary) -->
-                    <button
-                        type="button"
-                        class="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-white hover:bg-gray-50 transition-colors"
-                        :class="{ 'bg-gray-50': openId === faq.id }"
-                        @click="toggle(faq.id)"
-                        :aria-expanded="openId === faq.id"
-                    >
-                        <span class="font-semibold text-gray-900 text-base leading-snug">
-                            {{ faq.question }}
-                        </span>
-                        <span class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition-all"
-                              :class="openId === faq.id ? 'border-green-500 text-green-500 bg-green-50' : ''">
-                            <svg v-if="openId !== faq.id" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                            </svg>
-                            <svg v-else class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/>
-                            </svg>
-                        </span>
-                    </button>
+                <!-- 2-column grid on desktop -->
+                <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-x-6 lg:gap-y-3 items-start">
 
-                    <!-- Answer -->
-                    <div
-                        v-show="openId === faq.id"
-                        class="px-6 pb-5 pt-1 border-t border-gray-100 bg-white"
-                    >
-                        <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ faq.answer }}</p>
+                    <!-- Left column -->
+                    <div class="space-y-3">
+                        <div
+                            v-for="faq in leftFaqs"
+                            :key="faq.id"
+                            class="border border-gray-200 rounded-xl overflow-hidden transition-shadow"
+                            :class="openId === faq.id ? 'shadow-md' : 'hover:shadow-sm'"
+                        >
+                            <button
+                                type="button"
+                                class="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-white hover:bg-gray-50 transition-colors"
+                                :class="{ 'bg-gray-50': openId === faq.id }"
+                                @click="toggle(faq.id)"
+                                :aria-expanded="openId === faq.id"
+                            >
+                                <span class="font-semibold text-gray-900 text-base leading-snug">
+                                    {{ faq.question }}
+                                </span>
+                                <span class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition-all"
+                                      :class="openId === faq.id ? 'border-green-500 text-green-500 bg-green-50' : ''">
+                                    <svg v-if="openId !== faq.id" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                                    </svg>
+                                    <svg v-else class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/>
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                v-show="openId === faq.id"
+                                class="px-6 pb-5 pt-1 border-t border-gray-100 bg-white"
+                            >
+                                <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ faq.answer }}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
+                    <!-- Right column -->
+                    <div class="space-y-3">
+                        <div
+                            v-for="faq in rightFaqs"
+                            :key="faq.id"
+                            class="border border-gray-200 rounded-xl overflow-hidden transition-shadow"
+                            :class="openId === faq.id ? 'shadow-md' : 'hover:shadow-sm'"
+                        >
+                            <button
+                                type="button"
+                                class="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-white hover:bg-gray-50 transition-colors"
+                                :class="{ 'bg-gray-50': openId === faq.id }"
+                                @click="toggle(faq.id)"
+                                :aria-expanded="openId === faq.id"
+                            >
+                                <span class="font-semibold text-gray-900 text-base leading-snug">
+                                    {{ faq.question }}
+                                </span>
+                                <span class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition-all"
+                                      :class="openId === faq.id ? 'border-green-500 text-green-500 bg-green-50' : ''">
+                                    <svg v-if="openId !== faq.id" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                                    </svg>
+                                    <svg v-else class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/>
+                                    </svg>
+                                </span>
+                            </button>
+                            <div
+                                v-show="openId === faq.id"
+                                class="px-6 pb-5 pt-1 border-t border-gray-100 bg-white"
+                            >
+                                <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ faq.answer }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </section>
 

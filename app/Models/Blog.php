@@ -58,7 +58,7 @@ class Blog extends Model
 
     public function scopeFeatured($query)
     {
-        return $query->where('is_featured', true);
+        return $query->whereRaw('"is_featured" = true');
     }
 
     public static function calcReadingTime(string $content): int

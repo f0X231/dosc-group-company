@@ -13,7 +13,7 @@ import PublicLayout from '@/Layouts/PublicLayout.vue';
         <!-- Service Details -->
         <section class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4 text-center">
-                <h2 class="text-2xl font-bold text-gray-900">ทำไมต้องทำ Google Ads</h2>
+                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">ทำไมต้องทำ Google Ads</h2>
                 <p class="mt-2 text-gray-500">placeholder</p>
             </div>
         </section>
@@ -21,7 +21,7 @@ import PublicLayout from '@/Layouts/PublicLayout.vue';
         <!-- Pricing -->
         <section class="py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 text-center">
-                <h2 class="text-2xl font-bold text-gray-900">แพ็กเกจ Google Ads</h2>
+                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">แพ็กเกจ Google Ads</h2>
                 <p class="mt-2 text-gray-500">placeholder</p>
             </div>
         </section>

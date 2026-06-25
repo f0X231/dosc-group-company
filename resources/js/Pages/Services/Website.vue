@@ -258,7 +258,7 @@ const ICON_PATHS = {
         <section class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-10">
-                    <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 font-kanit">ทุกแพ็กเกจคุณจะได้รับ</h2>
+                    <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">ทุกแพ็กเกจคุณจะได้รับ</h2>
                     <p class="mt-2 text-gray-500 font-kanit text-sm">สิ่งเหล่านี้รวมอยู่ในทุก Package ไม่ว่าคุณจะเลือกแพ็กเกจไหน</p>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -301,8 +301,7 @@ const ICON_PATHS = {
         <section v-if="addons.length" class="py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-10">
-                    <p class="text-xs font-bold tracking-widest uppercase text-red-700 mb-2 font-kanit">ADD-ONS</p>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 font-kanit">บริการเสริมเพิ่มเติม</h2>
+                    <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">บริการเสริมเพิ่มเติม</h2>
                     <p class="mt-2 text-gray-500 font-kanit text-sm">เพิ่มเติมได้กับทุก Package ตามความต้องการ</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -329,8 +328,7 @@ const ICON_PATHS = {
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex items-end justify-between mb-10">
                     <div>
-                        <p class="text-xs font-bold tracking-widest uppercase text-red-700 mb-2 font-kanit">OUR WORK</p>
-                        <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 font-kanit">ผลงานตัวอย่าง</h2>
+                        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">ผลงานตัวอย่าง</h2>
                     </div>
                     <Link href="/portfolio"
                           class="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-red-700 hover:text-red-900 font-kanit">
@@ -367,7 +365,7 @@ const ICON_PATHS = {
                     <!-- Left: dark red panel -->
                     <div class="bg-[#7c1d1d] px-10 lg:px-14 py-16 flex flex-col justify-center">
                         <p class="text-xs font-bold tracking-widest uppercase text-white/50 mb-3 font-kanit">HOW WE WORK</p>
-                        <h2 class="text-2xl lg:text-3xl font-bold text-white font-kanit leading-snug mb-4">
+                        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white font-kanit leading-snug mb-4">
                             สร้างเว็บไซต์ที่ดีที่สุด<br>สำหรับธุรกิจของคุณ<br>ใน {{ workSteps.length }} ขั้นตอน
                         </h2>
                         <ul class="space-y-3 mb-8">
@@ -412,8 +410,7 @@ const ICON_PATHS = {
         <section v-if="whyUsItems.length" class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-10">
-                    <p class="text-xs font-bold tracking-widest uppercase text-red-700 mb-2 font-kanit">WHY US</p>
-                    <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 font-kanit">ทำไมต้องเลือกเรา</h2>
+                    <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">ทำไมต้องเลือกเรา</h2>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     <div v-for="item in whyUsItems" :key="item.id"

@@ -26,8 +26,7 @@ function submit() {
         <!-- Page Header -->
         <section class="bg-gray-50 py-14 text-center border-b border-gray-200">
             <div class="max-w-3xl mx-auto px-4">
-                <p class="text-sm font-medium text-green-500 uppercase tracking-widest mb-2">Contact Us</p>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">ติดต่อเรา</h1>
+                <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 font-kanit">ติดต่อเรา</h1>
                 <p class="mt-3 text-gray-500 text-base">มีข้อสงสัยหรืออยากปรึกษาเรื่องเว็บไซต์? ส่งข้อความมาได้เลย</p>
             </div>
         </section>

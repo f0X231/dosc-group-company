@@ -10,6 +10,14 @@ const servicesOpen = ref(false);
 const mobilePortfolioOpen = ref(false);
 const mobileServicesOpen = ref(false);
 
+let portfolioTimer = null;
+let servicesTimer  = null;
+
+function openPortfolio()  { clearTimeout(portfolioTimer); portfolioOpen.value = true; }
+function closePortfolio() { portfolioTimer = setTimeout(() => { portfolioOpen.value = false; }, 200); }
+function openServices()   { clearTimeout(servicesTimer);  servicesOpen.value  = true; }
+function closeServices()  { servicesTimer  = setTimeout(() => { servicesOpen.value  = false; }, 200); }
+
 function closeMobile() {
     mobileOpen.value = false;
     mobilePortfolioOpen.value = false;
@@ -41,8 +49,8 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
 
                         <!-- ผลงาน dropdown -->
                         <div class="relative"
-                             @mouseenter="portfolioOpen = true"
-                             @mouseleave="portfolioOpen = false">
+                             @mouseenter="openPortfolio"
+                             @mouseleave="closePortfolio">
                             <button class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 rounded-md hover:bg-gray-50 transition">
                                 ผลงาน
                                 <svg class="w-3.5 h-3.5 mt-0.5 transition-transform" :class="{ 'rotate-180': portfolioOpen }" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
@@ -60,8 +68,8 @@ const socialLinks = computed(() => page.props.socialLinks ?? []);
 
                         <!-- บริการและราคา dropdown -->
                         <div class="relative"
-                             @mouseenter="servicesOpen = true"
-                             @mouseleave="servicesOpen = false">
+                             @mouseenter="openServices"
+                             @mouseleave="closeServices">
                             <button class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 rounded-md hover:bg-gray-50 transition">
                                 บริการและราคา
                                 <svg class="w-3.5 h-3.5 mt-0.5 transition-transform" :class="{ 'rotate-180': servicesOpen }" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
