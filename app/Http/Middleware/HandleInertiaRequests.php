@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
                 ? Contact::unread()->count()
                 : 0,
             'site'        => fn () => SiteSetting::current(),
-            'socialLinks' => fn () => SocialLink::active()->orderBy('sort_order')->get(),
+            'socialLinks' => fn () => SocialLink::where('is_active', true)->orderBy('sort_order')->get(),
             'seo'         => function () use ($request) {
                 $key = $request->route()?->getName();
                 return $key ? PageSeo::getCachedByKey($key) : null;

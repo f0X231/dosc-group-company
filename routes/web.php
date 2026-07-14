@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ContactController;
@@ -27,6 +27,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // ─── Public Routes ────────────────────────────────────────────────────────────
+Route::get('/clear-everything', function () {
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    return 'ล้างแคช Laravel ทั้งหมดเรียบร้อยแล้วครับ! 🎉';
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
