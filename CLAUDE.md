@@ -2,59 +2,6 @@
 
 โปรเจคนี้คือเว็บไซต์บริษัท **DOSC Group** (บริษัทรับทำเว็บไซต์) พัฒนาด้วย Laravel + Inertia.js + Vue 3
 
-## Stack โดยสรุป
-
-- **Laravel 13** + **PHP 8.5** — backend, routing, auth
-- **Inertia.js** + **Vue 3 (Composition API `<script setup>`)** — frontend SPA
-- **Tailwind CSS v4** — styling (ใช้ `@tailwindcss/vite` plugin ไม่ใช่ PostCSS config เดิม)
-- **PostgreSQL ผ่าน Supabase** — database (connection pooler port 6543)
-- **Supabase Storage** — file uploads ทุกชนิด (ผ่าน `SupabaseStorageService`)
-- **Tiptap v2** — rich text editor สำหรับ blog
-
-## คำสั่งที่ใช้บ่อย
-
-```bash
-npm run build          # build assets สำหรับ production
-npm run dev            # dev server (Vite HMR)
-php artisan migrate    # run pending migrations
-php artisan serve      # Laravel dev server
-composer run dev       # รัน artisan serve + npm dev พร้อมกัน
-```
-
-## โครงสร้าง Frontend ที่สำคัญ
-
-```
-resources/js/
-├── Layouts/
-│   ├── PublicLayout.vue     # navbar + footer สาธารณะ
-│   └── AdminLayout.vue      # sidebar admin
-└── Pages/
-    ├── Home.vue             # หน้าแรก — ทุก section อยู่ในไฟล์เดียว
-    └── Admin/
-        ├── Service/Index.vue
-        ├── Portfolio/Index.vue
-        ├── Packages/...
-        └── Settings/Index.vue
-```
-
-## โครงสร้าง Backend ที่สำคัญ
-
-```
-app/
-├── Http/
-│   ├── Controllers/Admin/   # CMS controllers
-│   ├── Controllers/Auth/    # Breeze auth — redirect ไป admin.dashboard
-│   └── Middleware/HandleInertiaRequests.php  # share site settings ทุก page
-├── Models/                  # Eloquent models
-└── Services/SupabaseStorageService.php
-```
-
-## Routes
-
-- Public: `/`, `/portfolio`, `/services/*`, `/faq`, `/blog/*`, `/contact`, `/privacy-policy`
-- Admin: `/admin/*` — prefix `admin.`, middleware `auth,verified`
-- Auth: `/login`, `/register` ฯลฯ — หลัง login redirect → `admin.dashboard`
-
 ## Database (Supabase PostgreSQL)
 
 ใช้ **Transaction Pooler** เท่านั้น:
@@ -64,12 +11,6 @@ Port: 6543
 Username: postgres.{project_ref}
 ```
 ห้ามใช้ direct host (`db.xxx.supabase.co`) เพราะ DNS resolve ไม่ได้
-
-## Global Shared Props (ทุก page)
-
-ผ่าน `HandleInertiaRequests`:
-- `page.props.site` — `SiteSetting` object (logo_url, favicon_url, phone, email, social_links ฯลฯ)
-- `page.props.auth.user` — user ปัจจุบัน
 
 ## Home.vue — Section Map
 
