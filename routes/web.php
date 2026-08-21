@@ -28,11 +28,16 @@ use Inertia\Inertia;
 
 // ─── Public Routes ────────────────────────────────────────────────────────────
 Route::get('/clear-everything', function () {
+    // 1. ลบไฟล์แคชทั้งหมดของ Laravel
     Artisan::call('config:clear');
     Artisan::call('route:clear');
     Artisan::call('view:clear');
     Artisan::call('cache:clear');
-    return 'ล้างแคช Laravel ทั้งหมดเรียบร้อยแล้วครับ! 🎉';
+    
+    // 2. ลบไฟล์ bootstrap/cache/packages.php และ services.php ออกด้วยคำสั่ง
+    Artisan::call('clear-compiled');
+
+    return 'ล้างแคชและ Re-optimize ระบบเรียบร้อยแล้วครับ! 🎉';
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -58,13 +63,13 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/privacy-policy', fn () => Inertia::render('PrivacyPolicy'))->name('privacy-policy');
 
 // ─── Admin Routes ─────────────────────────────────────────────────────────────
-
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
+    // Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
+    Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
 
     // Site Settings
-    Route::middleware('admin.permission:settings')->group(function () {
+    Route::middleware(AdminPermission::class . ':settings')->group(function () {
         Route::get('/settings', [SiteSettingController::class, 'index'])->name('settings');
         Route::post('/settings/general', [SiteSettingController::class, 'saveGeneral'])->name('settings.general');
         Route::post('/settings/contact', [SiteSettingController::class, 'saveContact'])->name('settings.contact');
@@ -209,11 +214,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 });
 
 // ─── Auth & Profile Routes ────────────────────────────────────────────────────
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class SocialLink extends Model
 {
@@ -18,6 +19,9 @@ class SocialLink extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        // ->where('is_active', true) binds as integer 1, which fails against a
+        // native pgsql boolean column when PDO::ATTR_EMULATE_PREPARES is on
+        // (required for Supabase's Transaction Pooler). Inline the literal instead.
+        return $query->where('is_active', DB::raw('true'));
     }
 }
